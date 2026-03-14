@@ -1,0 +1,264 @@
+/* ====== Layout base ====== */
+.usuarios-container {
+  padding: 22px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.usuarios-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.usuarios-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.usuarios-sub {
+  opacity: 0.78;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+/* Search */
+.usuarios-search {
+  min-width: 320px;
+  max-width: 420px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.usuarios-search:focus {
+  border-color: rgba(120, 180, 255, 0.45);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ====== Grid ====== */
+.usuarios-grid {
+  display: grid;
+  grid-template-columns: 440px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* ====== Cards ====== */
+.usuarios-card {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+.card-title {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+/* ====== Form ====== */
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.label {
+  opacity: 0.75;
+  font-size: 12px;
+}
+
+.form input,
+.form select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.form input:focus,
+.form select:focus {
+  border-color: rgba(0, 255, 170, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+/* Se seu botão "btn-primary" já existe globalmente, não mexe.
+   Se não existir, você pode comentar isso abaixo. */
+.btn-primary {
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(120, 180, 255, 0.18);
+  color: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.05s ease, background 0.15s ease;
+}
+.btn-primary:active { transform: translateY(1px); }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ====== Tabela ====== */
+.tableWrap {
+  width: 100%;
+  overflow: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px; /* força scroll horizontal no mobile */
+}
+
+.usuarios-table th,
+.usuarios-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.usuarios-table th {
+  font-size: 12px;
+  opacity: 0.78;
+  font-weight: 800;
+}
+
+.usuarios-table td {
+  font-size: 13px;
+}
+
+.usuarios-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.muted {
+  opacity: 0.75;
+}
+
+/* ====== Pills (tipo) ====== */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.pill.admin {
+  border-color: rgba(120, 180, 255, 0.40);
+  background: rgba(120, 180, 255, 0.12);
+}
+
+.pill.recepcao {
+  border-color: rgba(0, 255, 170, 0.30);
+  background: rgba(0, 255, 170, 0.10);
+}
+
+.pill.instrutor {
+  border-color: rgba(255, 200, 80, 0.30);
+  background: rgba(255, 200, 80, 0.10);
+}
+
+/* caso ainda apareça "aluno" em algum registro antigo */
+.pill.aluno {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ====== Erro ====== */
+.errorBox {
+  border: 1px solid rgba(255, 70, 70, 0.30);
+  background: rgba(255, 70, 70, 0.10);
+  padding: 10px 12px;
+  border-radius: 14px;
+}
+
+/* ====== Responsivo ====== */
+@media (max-width: 1100px) {
+  .usuarios-container {
+    max-width: 980px;
+  }
+  .usuarios-grid {
+    grid-template-columns: 380px 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .usuarios-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .usuarios-search {
+    max-width: none;
+    min-width: 0;
+  }
+
+  .usuarios-grid {
+    grid-template-columns: 1fr; /* empilha */
+  }
+
+  .usuarios-card {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 520px) {
+  .usuarios-container {
+    padding: 14px;
+  }
+
+  .usuarios-title {
+    font-size: 20px;
+  }
+
+  .usuarios-sub {
+    font-size: 12px;
+  }
+
+  .usuarios-card {
+    border-radius: 16px;
+  }
+
+  .form input,
+  .form select,
+  .usuarios-search {
+    border-radius: 12px;
+  }
+}

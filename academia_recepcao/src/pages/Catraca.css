@@ -1,0 +1,129 @@
+.catraca-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.catraca-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.catraca-title {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.catraca-subtitle {
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+.catraca-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  outline: none;
+  font-size: 16px;
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+
+.alert {
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.alert-ok {
+  border-color: rgba(0, 200, 120, 0.45);
+}
+
+.alert-bad,
+.alert-error {
+  border-color: rgba(220, 20, 60, 0.45);
+}
+
+.alert-title {
+  font-weight: 800;
+}
+
+.alert-text {
+  margin-top: 6px;
+  opacity: 0.9;
+}
+
+.alert-small {
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pill.liberado {
+  border-color: rgba(0, 200, 120, 0.45);
+}
+
+.pill.bloqueado {
+  border-color: rgba(220, 20, 60, 0.45);
+}
+
+@media (max-width: 700px) {
+  .catraca-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,182 @@
+/* ===========================
+   LAYOUT
+=========================== */
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ===========================
+   TOP BAR
+=========================== */
+
+.dashboard-topbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dashboard-title {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.dashboard-subtitle {
+  opacity: 0.75;
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+/* ===========================
+   GRID RESPONSIVO
+=========================== */
+
+.dashboard-grid {
+  display: grid;
+  gap: 14px;
+}
+
+/* Desktop */
+@media (min-width: 1100px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Tablet */
+@media (min-width: 650px) and (max-width: 1099px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 649px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================
+   CARDS
+=========================== */
+
+.stat-card {
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  padding: 16px;
+  transition: 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.stat-title {
+  opacity: 0.8;
+  font-size: 13px;
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 900;
+  margin-top: 6px;
+}
+
+.stat-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* Receita destaque */
+.stat-accent {
+  border: 1px solid rgba(88,140,255,0.3);
+  background: radial-gradient(
+      600px 250px at 30% 20%,
+      rgba(88,140,255,0.15),
+      transparent
+    ),
+    rgba(255,255,255,0.04);
+}
+
+/* ===========================
+   PANEL
+=========================== */
+
+.dashboard-panel {
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  overflow: hidden;
+}
+
+.dashboard-panel-header {
+  padding: 14px;
+  font-weight: 900;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ===========================
+   TABLE
+=========================== */
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard-table th {
+  text-align: left;
+  padding: 12px;
+  font-size: 12px;
+  opacity: 0.7;
+  background: rgba(0,0,0,0.15);
+}
+
+.dashboard-table td {
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ===========================
+   STATUS
+=========================== */
+
+.status-pill {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.status-ok {
+  background: rgba(0, 200, 120, 0.15);
+}
+
+.status-bad {
+  background: rgba(220, 20, 60, 0.15);
+}
+
+.status-neutral {
+  background: rgba(255,255,255,0.08);
+}
+
+/* ===========================
+   BUTTON
+=========================== */
+
+.btn-refresh {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  cursor: pointer;
+  font-weight: 800;
+}
