@@ -6,17 +6,21 @@ import os
 from .database import engine, Base
 from . import models
 from .routes import usuario
-from app.routes import cliente, plano, acesso, pagamento, sync, catraca
-from app.routes import dashboard
-from app.routes import cliente, plano, acesso, pagamento, sync, catraca, treino
+from app.routes import cliente, plano, acesso, pagamento, sync, catraca, dashboard, treino
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://academia-system-hdw2.vercel.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
