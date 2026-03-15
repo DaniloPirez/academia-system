@@ -1,0 +1,7 @@
+Dentro da pasta do projeto:
+
+python -m venv venv
+
+Ativar:
+
+venv\Scripts\activate
