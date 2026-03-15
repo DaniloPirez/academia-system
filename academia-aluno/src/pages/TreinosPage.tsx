@@ -813,7 +813,7 @@ export default function TreinosPage() {
 
               <textarea
                 id="observacaoFinalizacao"
-                rows="4"
+                rows={4}
                 placeholder="Ex: treino tranquilo, aumentei carga, senti dificuldade em um exercício..."
                 value={observacaoFinalizacao}
                 onChange={(e) => setObservacaoFinalizacao(e.target.value)}
