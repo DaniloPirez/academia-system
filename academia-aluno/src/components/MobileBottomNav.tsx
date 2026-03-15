@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { House, Fingerprint, CreditCard, Dumbbell, User } from "lucide-react";
+import { House, Fingerprint, CreditCard, Dumbbell} from "lucide-react";
 import { useClienteMe, getFotoUrl, getInitials } from "../hooks/useClienteMe";
 
 const items = [

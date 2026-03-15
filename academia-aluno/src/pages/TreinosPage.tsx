@@ -1,6 +1,60 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://academia-backend-5m3g.onrender.com";
+
+type Exercicio = {
+  id: string;
+  nome_exercicio: string;
+  video_url?: string | null;
+  dia_semana?: string | null;
+  ordem?: number | null;
+  series?: number | null;
+  repeticoes?: string | null;
+  carga?: string | null;
+  descanso?: string | null;
+  observacoes?: string | null;
+};
+
+type Execucao = {
+  id: string;
+  treino_exercicio_id: string;
+  nome_exercicio?: string | null;
+  series_planejadas?: number | null;
+  series_concluidas?: number | null;
+  repeticoes_planejadas?: string | null;
+  repeticoes_realizadas?: string | null;
+  carga_planejada?: string | null;
+  carga_realizada?: string | null;
+  concluido?: boolean;
+  observacoes?: string | null;
+};
+
+type Treino = {
+  id: string;
+  cliente_id?: string | null;
+  instrutor_id: string;
+  instrutor_nome?: string | null;
+  nome: string;
+  tipo: string;
+  caracteristica: string;
+  descricao?: string | null;
+  ativo: boolean;
+  criado_em?: string;
+  atualizado_em?: string;
+  exercicios: Exercicio[];
+};
+
+type Historico = {
+  id: string;
+  treino_id: string;
+  cliente_id?: string;
+  dia_semana: string;
+  iniciado_em?: string | null;
+  finalizado_em?: string | null;
+  duracao_segundos?: number | null;
+  status: string;
+  observacoes?: string | null;
+};
 
 function obterDiaAtual() {
   const dias = [
@@ -28,8 +82,8 @@ function obterDiaAtualHistorico() {
   return dias[new Date().getDay()];
 }
 
-function formatarDiaExibicao(dia) {
-  const mapa = {
+function formatarDiaExibicao(dia?: string | null) {
+  const mapa: Record<string, string> = {
     domingo: "Domingo",
     segunda: "Segunda-feira",
     terca: "Terça-feira",
@@ -39,22 +93,22 @@ function formatarDiaExibicao(dia) {
     sabado: "Sábado",
   };
 
-  return mapa[dia] || dia || "-";
+  return (dia && mapa[dia]) || dia || "-";
 }
 
-function formatarTempo(segundos) {
+function formatarTempo(segundos: number) {
   const h = String(Math.floor(segundos / 3600)).padStart(2, "0");
   const m = String(Math.floor((segundos % 3600) / 60)).padStart(2, "0");
   const s = String(segundos % 60).padStart(2, "0");
   return `${h}:${m}:${s}`;
 }
 
-function capitalizar(texto) {
+function capitalizar(texto?: string | null) {
   if (!texto) return "";
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
 
-function converterYoutubeParaEmbed(url) {
+function converterYoutubeParaEmbed(url?: string | null) {
   if (!url) return "";
 
   if (url.includes("youtube.com/watch?v=")) {
@@ -71,33 +125,35 @@ function converterYoutubeParaEmbed(url) {
 }
 
 export default function TreinosPage() {
-  const [treinos, setTreinos] = useState([]);
-  const [historico, setHistorico] = useState([]);
+  const [treinos, setTreinos] = useState<Treino[]>([]);
+  const [historico, setHistorico] = useState<Historico[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
-  const [treinoSelecionado, setTreinoSelecionado] = useState(null);
-  const [execucoesAtuais, setExecucoesAtuais] = useState([]);
-  const [salvandoExecucaoId, setSalvandoExecucaoId] = useState(null);
+  const [treinoSelecionado, setTreinoSelecionado] = useState<Treino | null>(null);
+  const [execucoesAtuais, setExecucoesAtuais] = useState<Execucao[]>([]);
+  const [salvandoExecucaoId, setSalvandoExecucaoId] = useState<string | null>(null);
 
-  const [treinoEmExecucao, setTreinoEmExecucao] = useState(null);
-  const [historicoExecucaoId, setHistoricoExecucaoId] = useState(null);
+  const [treinoEmExecucao, setTreinoEmExecucao] = useState<Treino | null>(null);
+  const [historicoExecucaoId, setHistoricoExecucaoId] = useState<string | null>(null);
   const [segundos, setSegundos] = useState(0);
   const [videoAberto, setVideoAberto] = useState("");
 
   const [modalFinalizacaoAberto, setModalFinalizacaoAberto] = useState(false);
   const [observacaoFinalizacao, setObservacaoFinalizacao] = useState("");
 
-  const intervaloRef = useRef(null);
+  const intervaloRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const token = localStorage.getItem("cliente_token");
+  const token =
+    localStorage.getItem("cliente_token") ||
+    localStorage.getItem("access_token");
 
   const headers = useMemo(() => {
-    const base = { "Content-Type": "application/json" };
+    const base: Record<string, string> = { "Content-Type": "application/json" };
     if (token) base.Authorization = `Bearer ${token}`;
     return base;
   }, [token]);
 
-  function selecionarTreino(treino) {
+  function selecionarTreino(treino: Treino) {
     setTreinoSelecionado(treino);
   }
 
@@ -115,7 +171,7 @@ export default function TreinosPage() {
         throw new Error("Falha ao buscar treinos");
       }
 
-      const data = await res.json();
+      const data: Treino[] = await res.json();
       setTreinos(data);
 
       if (!treinoSelecionado && data.length > 0) {
@@ -124,7 +180,9 @@ export default function TreinosPage() {
 
       setErro("");
     } catch (e) {
-      if (e.message === "unauthorized") {
+      const message = e instanceof Error ? e.message : "Erro desconhecido";
+
+      if (message === "unauthorized") {
         setErro("Sessão expirada ou token inválido. Faça login novamente.");
         setTreinos([]);
         return;
@@ -149,10 +207,12 @@ export default function TreinosPage() {
         throw new Error("Falha ao buscar histórico");
       }
 
-      const data = await res.json();
+      const data: Historico[] = await res.json();
       setHistorico(data);
     } catch (e) {
-      if (e.message === "unauthorized") {
+      const message = e instanceof Error ? e.message : "Erro desconhecido";
+
+      if (message === "unauthorized") {
         setHistorico([]);
         return;
       }
@@ -176,14 +236,16 @@ export default function TreinosPage() {
       intervaloRef.current = setInterval(() => {
         setSegundos((prev) => prev + 1);
       }, 1000);
-    } else {
+    } else if (intervaloRef.current) {
       clearInterval(intervaloRef.current);
     }
 
-    return () => clearInterval(intervaloRef.current);
+    return () => {
+      if (intervaloRef.current) clearInterval(intervaloRef.current);
+    };
   }, [treinoEmExecucao]);
 
-  async function iniciarTreino(treino) {
+  async function iniciarTreino(treino: Treino) {
     setTreinoEmExecucao(treino);
     setSegundos(0);
 
@@ -200,7 +262,7 @@ export default function TreinosPage() {
         throw new Error("Falha ao iniciar treino");
       }
 
-      const data = await res.json();
+      const data: { id: string; execucoes?: Execucao[] } = await res.json();
       setHistoricoExecucaoId(data.id);
       setExecucoesAtuais(data.execucoes || []);
     } catch {
@@ -232,7 +294,7 @@ export default function TreinosPage() {
         );
       }
 
-      const novoHistorico = {
+      const novoHistorico: Historico = {
         id: historicoId || `mock-${Date.now()}`,
         treino_id: treinoAtual.id,
         dia_semana: obterDiaAtualHistorico(),
@@ -255,7 +317,11 @@ export default function TreinosPage() {
     }
   }
 
-  function atualizarExecucaoLocal(execucaoId, campo, valor) {
+  function atualizarExecucaoLocal(
+    execucaoId: string,
+    campo: keyof Execucao,
+    valor: string | number | boolean | null
+  ) {
     setExecucoesAtuais((prev) =>
       prev.map((item) =>
         item.id === execucaoId ? { ...item, [campo]: valor } : item
@@ -263,7 +329,7 @@ export default function TreinosPage() {
     );
   }
 
-  async function salvarExecucao(execucao) {
+  async function salvarExecucao(execucao: Execucao) {
     try {
       setSalvandoExecucaoId(execucao.id);
 
@@ -283,7 +349,7 @@ export default function TreinosPage() {
         throw new Error("Falha ao salvar execução");
       }
 
-      const data = await res.json();
+      const data: Execucao = await res.json();
 
       setExecucoesAtuais((prev) =>
         prev.map((item) => (item.id === data.id ? data : item))
@@ -319,7 +385,7 @@ export default function TreinosPage() {
       ? Math.round((totalConcluidos / totalExercicios) * 100)
       : 0;
 
-  function obterNomeTreino(treinoId) {
+  function obterNomeTreino(treinoId: string) {
     const treino = treinos.find((t) => t.id === treinoId);
     return treino ? treino.nome : "Treino";
   }
@@ -613,7 +679,7 @@ export default function TreinosPage() {
                                   type="button"
                                   className="link-video botao-video"
                                   onClick={() =>
-                                    setVideoAberto(exercicio.video_url)
+                                    setVideoAberto(exercicio.video_url || "")
                                   }
                                 >
                                   Assistir vídeo do exercício
@@ -776,4 +842,4 @@ export default function TreinosPage() {
       )}
     </div>
   );
-}
+} 
