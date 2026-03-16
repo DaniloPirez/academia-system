@@ -17,6 +17,7 @@ origins = [
     "http://127.0.0.1:5173",
     "https://academia-system-hdw2.vercel.app",
     "https://academia-system-nhrjhqmsy-danilopirezs-projects.vercel.app",
+    "https://academia-system-tau.vercel.app",
 ]
 
 app.add_middleware(
