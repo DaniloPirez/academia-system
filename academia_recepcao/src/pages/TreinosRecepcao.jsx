@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "./TreinosRecepcao.css";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://academia-backend-5m3g.onrender.com";
 
 function novoExercicio() {
   return {
