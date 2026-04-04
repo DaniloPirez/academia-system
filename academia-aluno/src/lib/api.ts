@@ -1,11 +1,12 @@
 import axios from "axios";
+import { getAuthToken, handleExpiredSession } from "./auth";
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000",
+  baseURL: import.meta.env.VITE_API_URL || "https://academia-backend-5m3g.onrender.com",
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("cliente_token");
+  const token = getAuthToken();
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -13,3 +14,14 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      handleExpiredSession();
+    }
+
+    return Promise.reject(error);
+  }
+);

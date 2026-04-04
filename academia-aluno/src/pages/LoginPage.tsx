@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
+import { consumeAuthExpiredMessage, saveAuth } from "../lib/auth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -8,6 +9,14 @@ export default function LoginPage() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const expiredMessage = consumeAuthExpiredMessage();
+
+    if (expiredMessage) {
+      setErro(expiredMessage);
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -25,12 +34,7 @@ export default function LoginPage() {
         },
       });
 
-      localStorage.setItem("cliente_token", data.access_token);
-
-      if (data.refresh_token) {
-        localStorage.setItem("cliente_refresh_token", data.refresh_token);
-      }
-
+      saveAuth(data.access_token, data.refresh_token);
       navigate("/");
     } catch (error: any) {
       setErro(error?.response?.data?.detail || "Não foi possível realizar o login.");

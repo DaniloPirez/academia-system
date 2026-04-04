@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -10,10 +10,20 @@ export default function Login() {
   const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const expiredMessage = sessionStorage.getItem("auth_expired_message");
+
+    if (expiredMessage) {
+      setErro(expiredMessage);
+      sessionStorage.removeItem("auth_expired_message");
+    }
+  }, []);
+
   async function onSubmit(e) {
     e.preventDefault();
     setErro("");
     setLoading(true);
+
     try {
       await login(email, senha);
       nav("/");

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { fetchWithAuth } from "../lib/fetchWithAuth";
 
-const API_URL = "https://academia-backend-5m3g.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "https://academia-backend-5m3g.onrender.com";
 
 type Exercicio = {
   id: string;
@@ -143,15 +144,6 @@ export default function TreinosPage() {
 
   const intervaloRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const token =
-    localStorage.getItem("cliente_token") ||
-    localStorage.getItem("access_token");
-
-  const headers = useMemo(() => {
-    const base: Record<string, string> = { "Content-Type": "application/json" };
-    if (token) base.Authorization = `Bearer ${token}`;
-    return base;
-  }, [token]);
 
   function selecionarTreino(treino: Treino) {
     setTreinoSelecionado(treino);
@@ -159,9 +151,7 @@ export default function TreinosPage() {
 
   async function buscarTreinos() {
     try {
-      const res = await fetch(`${API_URL}/treinos/me/lista`, {
-        headers,
-      });
+      const res = await fetchWithAuth(`${API_URL}/treinos/me/lista`);
 
       if (res.status === 401) {
         throw new Error("unauthorized");
@@ -195,9 +185,7 @@ export default function TreinosPage() {
 
   async function buscarHistorico() {
     try {
-      const res = await fetch(`${API_URL}/treinos/me/historico`, {
-        headers,
-      });
+      const res = await fetchWithAuth(`${API_URL}/treinos/me/historico`);
 
       if (res.status === 401) {
         throw new Error("unauthorized");
@@ -252,9 +240,9 @@ export default function TreinosPage() {
     const diaAtual = obterDiaAtualHistorico();
 
     try {
-      const res = await fetch(`${API_URL}/treinos/${treino.id}/iniciar`, {
+      const res = await fetchWithAuth(`${API_URL}/treinos/${treino.id}/iniciar`, {
         method: "POST",
-        headers,
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ dia_semana: diaAtual }),
       });
 
@@ -282,11 +270,11 @@ export default function TreinosPage() {
 
     try {
       if (historicoId) {
-        await fetch(
+        await fetchWithAuth(
           `${API_URL}/treinos/${treinoAtual.id}/finalizar/${historicoId}`,
           {
             method: "POST",
-            headers,
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               observacoes: observacaoFinalizacao || null,
             }),
@@ -333,9 +321,9 @@ export default function TreinosPage() {
     try {
       setSalvandoExecucaoId(execucao.id);
 
-      const res = await fetch(`${API_URL}/treinos/execucoes/${execucao.id}`, {
+      const res = await fetchWithAuth(`${API_URL}/treinos/execucoes/${execucao.id}`, {
         method: "PUT",
-        headers,
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           series_concluidas: Number(execucao.series_concluidas || 0),
           repeticoes_realizadas: execucao.repeticoes_realizadas || "",

@@ -6,11 +6,7 @@ import PagamentosPage from "./pages/PagamentosPage";
 import PerfilPage from "./pages/PerfilPage";
 import TreinosPage from "./pages/TreinosPage";
 import AppLayout from "./components/AppLayout";
-
-
-function isAuthenticated() {
-  return !!localStorage.getItem("cliente_token");
-}
+import { isAuthenticated } from "./lib/auth";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   return isAuthenticated() ? <>{children}</> : <Navigate to="/login" replace />;
